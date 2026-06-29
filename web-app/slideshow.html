@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Gallery Wall</title>
+    <style>
+        :root {
+            --bg-color: #030406;
+            --accent-color: #3b82f6;
+            --text-color: #f3f4f6;
+            --panel-bg: rgba(18, 22, 28, 0.6);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --glass-blur: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Slideshow Background Container */
+        .slide-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .slide-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            transform: scale(1);
+        }
+
+        .slide-image.active {
+            opacity: 1;
+            animation: kenburns 15s linear forwards;
+        }
+
+        @keyframes kenburns {
+            0% { transform: scale(1.02) translate(0, 0); }
+            50% { transform: scale(1.08) translate(-1%, 0.5%); }
+            100% { transform: scale(1.03) translate(0.5%, -0.5%); }
+        }
+
+        /* Ambient Glow Background */
+        .ambient-blur {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(80px) opacity(0.35);
+            z-index: 0;
+            transition: opacity 1.5s ease-in-out;
+        }
+
+        /* Flash overlay for new capture */
+        .flash-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            opacity: 0;
+            z-index: 1000;
+            pointer-events: none;
+            transition: opacity 0.1s ease;
+        }
+
+        .flash-overlay.trigger {
+            opacity: 1;
+            transition: none;
+        }
+
+        /* New Photo Overlay Toast */
+        .new-photo-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(3, 4, 6, 0.95);
+            z-index: 500;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .new-photo-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .new-photo-card {
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            background: #11141a;
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 16px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: scale(0.85);
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .new-photo-overlay.visible .new-photo-card {
+            transform: scale(1);
+        }
+
+        .new-photo-image {
+            max-width: 100%;
+            max-height: 60vh;
+            object-fit: contain;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .new-photo-header {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            text-align: center;
+            text-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            animation: bounce 1.5s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        /* UI Controls overlay */
+        .ui-controls {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: var(--panel-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--border-color);
+            border-radius: 99px;
+            padding: 8px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            opacity: 0.2;
+            transition: opacity 0.3s;
+        }
+
+        .ui-controls:hover {
+            opacity: 1;
+        }
+
+        .ui-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .ui-btn:hover {
+            opacity: 1;
+        }
+
+        .party-tag {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-color);
+            border-right: 1px solid var(--border-color);
+            padding-right: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Blur Background -->
+    <img id="ambient-bg" class="ambient-blur" src="">
+
+    <!-- Slideshow Images -->
+    <div class="slide-container" id="slide-container">
+        <!-- Rendered by JS -->
+    </div>
+
+    <!-- Camera flash bulb overlay -->
+    <div class="flash-overlay" id="flash-overlay"></div>
+
+    <!-- New Photo Overlay -->
+    <div class="new-photo-overlay" id="new-photo-overlay">
+        <div class="new-photo-card">
+            <h2 class="new-photo-header">New Capture!</h2>
+            <img class="new-photo-image" id="new-photo-img" src="">
+        </div>
+    </div>
+
+    <!-- UI Overlay Controls -->
+    <div class="ui-controls">
+        <span class="party-tag">Live Gallery</span>
+        <button class="ui-btn" id="prev-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button class="ui-btn" id="play-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="play-icon"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button class="ui-btn" id="next-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+    </div>
+
+    <script>
+        let allMedia = [];
+        let currentSlideIndex = 0;
+        let isPlaying = true;
+        let slideInterval = null;
+        let pollInterval = null;
+        
+        const slideContainer = document.getElementById('slide-container');
+        const ambientBg = document.getElementById('ambient-bg');
+        const flashOverlay = document.getElementById('flash-overlay');
+        const newPhotoOverlay = document.getElementById('new-photo-overlay');
+        const newPhotoImg = document.getElementById('new-photo-img');
+        
+        const playBtn = document.getElementById('play-btn');
+        const playIcon = document.getElementById('play-icon');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        // mechanical shutter click audio context synthesizer
+        function playFlashChirp() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(1000, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(3000, ctx.currentTime + 0.15);
+                
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.18);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.2);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        // Get absolute file path from thumb link
+        function getSourcePath(filePath) {
+            return filePath.replace('/.t/', '/');
+        }
+
+        // Fetch media files
+        async function fetchFileList() {
+            try {
+                const response = await fetch('/files.txt', { cache: 'no-store' });
+                if (!response.ok) return;
+                
+                const text = await response.text();
+                const files = text.split('\n')
+                                  .map(line => line.trim())
+                                  .filter(line => line !== '' && !line.toLowerCase().endsWith('.mp4')); // Photos only
+                
+                if (files.length === 0) return;
+
+                // Check for new photo captured
+                if (allMedia.length > 0 && files.length > allMedia.length) {
+                    const newPhoto = files[files.length - 1]; // Latest file
+                    triggerNewCapture(newPhoto);
+                }
+                
+                allMedia = files;
+                
+                // Initialize slideshow if it's the first run
+                if (slideContainer.children.length === 0) {
+                    initializeSlideshow();
+                }
+            } catch (err) {
+                console.error("Fetch files error:", err);
+            }
+        }
+
+        // Trigger capture alert with flash animation
+        function triggerNewCapture(fileUrl) {
+            const highRes = getSourcePath(fileUrl);
+            
+            // 1. Play digital chirp
+            playFlashChirp();
+            
+            // 2. Trigger white screen flash
+            flashOverlay.classList.add('trigger');
+            setTimeout(() => flashOverlay.classList.remove('trigger'), 100);
+            
+            // 3. Show fullscreen overlay
+            newPhotoImg.src = highRes;
+            newPhotoOverlay.classList.add('visible');
+            
+            // Pause normal rotation while showing toast
+            pauseSlideshow();
+            
+            // 4. Dismiss toast after 7 seconds and resume slideshow
+            setTimeout(() => {
+                newPhotoOverlay.classList.remove('visible');
+                playSlideshow();
+                // Skip directly to the newly captured slide!
+                const newIndex = allMedia.indexOf(fileUrl);
+                if (newIndex !== -1) {
+                    currentSlideIndex = newIndex;
+                    showSlide(currentSlideIndex);
+                }
+            }, 7000);
+        }
+
+        function initializeSlideshow() {
+            slideContainer.innerHTML = '';
+            allMedia.forEach((file, index) => {
+                const img = document.createElement('img');
+                img.className = 'slide-image';
+                img.src = getSourcePath(file);
+                img.dataset.index = index;
+                slideContainer.appendChild(img);
+            });
+            showSlide(0);
+            playSlideshow();
+        }
+
+        function showSlide(index) {
+            if (allMedia.length === 0) return;
+            
+            // Safety bounds
+            if (index >= allMedia.length) currentSlideIndex = 0;
+            if (index < 0) currentSlideIndex = allMedia.length - 1;
+            
+            // Deactivate all images
+            const images = slideContainer.querySelectorAll('.slide-image');
+            images.forEach(img => {
+                img.classList.remove('active');
+            });
+            
+            // Activate current
+            const activeImg = images[currentSlideIndex];
+            if (activeImg) {
+                activeImg.classList.add('active');
+                // Set ambient glow blur background
+                ambientBg.src = activeImg.src;
+            }
+        }
+
+        function nextSlide() {
+            currentSlideIndex++;
+            showSlide(currentSlideIndex);
+        }
+
+        function prevSlide() {
+            currentSlideIndex--;
+            showSlide(currentSlideIndex);
+        }
+
+        function playSlideshow() {
+            isPlaying = true;
+            playIcon.innerHTML = `<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>`; // Pause symbol
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 10000); // 10s rotation
+        }
+
+        function pauseSlideshow() {
+            isPlaying = false;
+            playIcon.innerHTML = `<path d="M8 5v14l11-7z"/>`; // Play symbol
+            clearInterval(slideInterval);
+        }
+
+        // Button Controls
+        playBtn.addEventListener('click', () => {
+            if (isPlaying) pauseSlideshow();
+            else playSlideshow();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            pauseSlideshow();
+            prevSlide();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            pauseSlideshow();
+            nextSlide();
+        });
+
+        // Initialize polling and slideshow
+        fetchFileList();
+        pollInterval = setInterval(fetchFileList, 4000); // Poll files.txt every 4 seconds
+    </script>
+</body>
+</html>

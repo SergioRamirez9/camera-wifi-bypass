@@ -1,0 +1,44 @@
+=== Command: ls -la /customer/wifi/webserver ===
+total 0
+drwxr-xr-x    4 1000     1000             0 Sep 26  2025 [1;34m.[0m
+drwxr-xr-x    4 1000     1000             0 May  4 15:11 [1;34m..[0m
+drwxr-xr-x    2 1000     1000             0 Sep 26  2025 [1;34mconf[0m
+drwxr-xr-x    3 1000     1000             0 Sep 26  2025 [1;34mwww[0m
+
+=== Command: ls -la /customer/wifi/webserver/www ===
+total 88
+drwxr-xr-x    3 1000     1000             0 Sep 26  2025 [1;34m.[0m
+drwxr-xr-x    4 1000     1000             0 Sep 26  2025 [1;34m..[0m
+-rwxr-xr-x    1 1000     1000         87261 Sep 26  2025 [1;32mCGI_PROCESS.sh[0m
+-rwxr-xr-x    1 1000     1000          1713 Sep 26  2025 [1;32mcammenu.xml[0m
+drwxr-xr-x    2 1000     1000             0 Sep 26  2025 [1;34mcgi-bin[0m
+-rwxr-xr-x    1 1000     1000             0 Sep 26  2025 [1;32mdata.txt[0m
+
+=== Command: ls -la /customer/wifi/webserver/www/cgi-bin ===
+total 76
+drwxr-xr-x    2 1000     1000             0 Sep 26  2025 [1;34m.[0m
+drwxr-xr-x    3 1000     1000             0 Sep 26  2025 [1;34m..[0m
+-rwxr-xr-x    1 1000     1000         14135 Sep 26  2025 [1;32mCGI_COMMAND.txt[0m
+-rwxr-xr-x    1 1000     1000         62772 Sep 26  2025 [1;32mConfig.cgi[0m
+
+=== Command: ls -la /customer/wifi/webserver/conf ===
+total 6
+drwxr-xr-x    2 1000     1000             0 Sep 26  2025 [1;34m.[0m
+drwxr-xr-x    4 1000     1000             0 Sep 26  2025 [1;34m..[0m
+-rwxr-xr-x    1 1000     1000           444 Sep 26  2025 [1;32mauth.txt[0m
+-rwxr-xr-x    1 1000     1000          1924 Sep 26  2025 [1;32mroute.txt[0m
+-rwxr-xr-x    1 1000     1000          1444 Sep 26  2025 [1;32mself.crt[0m
+-rwxr-xr-x    1 1000     1000          1679 Sep 26  2025 [1;32mself.key[0m
+
+=== Command: cat /customer/wifi/webserver/conf/route.txt ===
+#
+
+=== Command: cat /customer/wifi/webserver/conf/web.properties ===
+#
+
+=== Command: strings /customer/wifi/webserver/www/cgi-bin/Config.cgi | head -n 100 ===
+
+
+=== Command: strings /customer/wifi/goahead | grep -i cgi ===
+
+

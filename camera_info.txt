@@ -1,0 +1,184 @@
+=========================================
+Camera Diagnostic Dump
+=========================================
+
+=== Command: mount ===
+rootfs on / type rootfs (rw)
+proc on /proc type proc (rw,relatime)
+sysfs on /sys type sysfs (rw,relatime)
+tmpfs on /tmp type tmpfs (rw,relatime,size=131884k,nr_inodes=32971)
+var on /var type tmpfs (rw,relatime,size=131884k,nr_inodes=32971)
+none on /sys/kernel/debug type debugfs (rw,relatime)
+mdev on /dev type tmpfs (rw,relatime,size=131884k,nr_inodes=32971)
+fwfs on /misc type fuse.fwfs (rw,nosuid,nodev,relatime,user_id=0,group_id=0)
+devpts on /dev/pts type devpts (rw,relatime,mode=600,ptmxmode=000)
+mtd:miservice on /config type jffs2 (rw,relatime)
+mtd:customer on /customer type jffs2 (rw,relatime)
+none on /customer/config type configfs (rw,relatime)
+/dev/mmcblk0p1 on /mnt/mmc type vfat (rw,noatime,nodiratime,fmask=0177,dmask=0177,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro)
+
+=== Command: df ===
+Filesystem           1K-blocks      Used Available Use% Mounted on
+tmpfs                   131884        96    131788   0% /tmp
+var                     131884         0    131884   0% /var
+mdev                    131884         0    131884   0% /dev
+fwfs                      1024       960        64  94% /misc
+mtd:miservice              320       216       104  68% /config
+mtd:customer              6336      5704       632  90% /customer
+/dev/mmcblk0p1        30527808   3596288  26931520  12% /mnt/mmc
+
+=== Command: ps w ===
+PID   USER     TIME   COMMAND
+    1 root       0:02 init
+    2 root       0:00 [kthreadd]
+    3 root       0:00 [ksoftirqd/0]
+    5 root       0:00 [kworker/0:0H]
+    6 root       0:00 [kworker/u4:0]
+    7 root       0:00 [rcu_preempt]
+    8 root       0:00 [rcu_sched]
+    9 root       0:00 [rcu_bh]
+   10 root       0:00 [migration/0]
+   11 root       0:00 [lru-add-drain]
+   12 root       0:00 [watchdog/0]
+   13 root       0:00 [cpuhp/0]
+   14 root       0:00 [cpuhp/1]
+   15 root       0:00 [watchdog/1]
+   16 root       0:00 [migration/1]
+   17 root       0:00 [ksoftirqd/1]
+   19 root       0:00 [kworker/1:0H]
+   20 root       0:00 [kdevtmpfs]
+   21 root       0:00 [netns]
+  190 root       0:00 [oom_reaper]
+  191 root       0:00 [writeback]
+  193 root       0:00 [kcompactd0]
+  194 root       0:00 [bioset]
+  196 root       0:00 [kblockd]
+  223 root       0:00 [watchdogd]
+  235 root       0:00 [kworker/0:1]
+  241 root       0:00 [kswapd0]
+  242 root       0:00 [vmstat]
+  342 root       0:00 [kworker/1:1]
+  346 root       0:00 [bioset]
+  351 root       0:00 [bioset]
+  356 root       0:00 [bioset]
+  361 root       0:00 [bioset]
+  366 root       0:00 [bioset]
+  371 root       0:00 [bioset]
+  376 root       0:00 [bioset]
+  382 root       0:00 [monitor_temp]
+  387 root       0:00 [spi0]
+  391 root       0:00 [spi1]
+  395 root       0:00 [spi2]
+  422 root       0:00 fwfs --block_size=65536 --subblock_size=32768 --block_cyc
+  426 root       0:00 -/bin/sh
+  427 root       0:00 busybox telnetd
+  438 root       0:00 [SensorIfThreadW]
+  446 root       0:01 [IspDriverThread]
+  453 root       0:25 [IspMidThreadWq]
+  473 root       0:00 [mi_wq]
+  474 root       0:00 [mi_cmdq_wq]
+  475 root       0:00 [dump]
+  478 root       0:00 [mi_log]
+  544 root       0:00 [jffs2_gcd_mtd3]
+  579 root       0:53 cardv /bootconfig/bin/default.ini
+  623 root       0:00 [RGN BUF WQ]
+  632 root       0:04 [vif0_P0_MAIN]
+  633 root       0:00 [vif1_P0_MAIN]
+  634 root       0:00 [vif2_P0_MAIN]
+  635 root       0:00 [vif3_P0_MAIN]
+  637 root       0:00 [Isp_DumpTaskThr]
+  638 root       0:34 [isp0_P0_MAIN]
+  645 root       0:00 [SCL_DumpTaskThr]
+  646 root       0:00 [scl0_P0_MAIN]
+  647 root       0:13 [scl3_P0_MAIN]
+  649 root       0:05 [disp0_P0_MAIN]
+  650 root       0:01 [disp1_P0_MAIN]
+  654 root       0:00 [jffs2_gcd_mtd4]
+  665 root       0:00 [kworker/u4:2]
+  671 root       0:00 [rc0]
+  676 root       0:00 [EventGroupWorkQ]
+  677 root       0:00 [EventGroupWorkQ]
+  678 root       0:00 [EventGroupWorkQ]
+  679 root       0:00 [EventGroupWorkQ]
+  680 root       0:00 [HDMITx_Task]
+  693 root       0:16 [ai0_P0_MAIN]
+  695 root       0:00 [venc0_P0_MAIN]
+  696 root       0:00 [venc8_P0_MAIN]
+  706 root       0:10 ./demo
+  736 root       0:00 [kworker/1:2]
+  741 root       0:00 [bioset]
+  742 root       0:00 [mmcqd/0]
+  754 root       0:00 [ehci_monitor]
+  765 root       0:00 [MI_FB_SYNC_DISP]
+  781 root       0:00 [rpciod]
+  782 root       0:00 [xprtiod]
+  798 root       0:00 [nfsiod]
+  822 root       0:00 [cfg80211]
+  940 root       0:01 [kworker/0:2]
+  958 root       0:00 [phy0-Sstar_wq]
+  959 root       0:00 [phy0-Sstar_prbr]
+  960 root       0:00 [phy0-usb_Sstar_]
+ 1005 root       0:00 /usr/sbin/udhcpd -S /customer/wifi/udhcpd-ap.conf
+ 1064 root       0:00 hostapd /customer/wifi/hostapd.conf -B
+ 1071 root       0:00 goahead -v --home /customer/wifi/webserver/conf/ /custome
+ 1586 root       0:00 -sh
+ 1593 root       0:00 ps w
+
+=== Command: ls -la / ===
+total 0
+drwxr-xr-x   20 root     root             0 May  4 15:11 [1;34m.[0m
+drwxr-xr-x   20 root     root             0 May  4 15:11 [1;34m..[0m
+lrwxrwxrwx    1 root     root            13 May  4 15:11 [1;36mP[0m -> [1;34m/mnt/mmc/DCIM[0m
+drwxr-xr-x    2 1000     1000             0 Sep 26  2025 [1;34mbin[0m
+drwxrwxr-x    7 1000     1000             0 Sep 26  2025 [1;34mbootconfig[0m
+drwxr-xr-x    3 root     root             0 Jan  1  1970 [1;34mconfig[0m
+drwxr-xr-x   10 root     root             0 Jan  1  1970 [1;34mcustomer[0m
+drwxrwxrwt    5 root     root          2140 May  4 15:11 [1;34mdev[0m
+drwxrwxr-x    3 1000     1000             0 Sep 26  2025 [1;34metc[0m
+drwxrwxr-x    2 1000     1000             0 Sep 26  2025 [1;34mhome[0m
+lrwxrwxrwx    1 1000     1000            11 Sep 26  2025 [1;36minit[0m -> [1;32mbin/busybox[0m
+drwxrwxr-x    3 1000     1000             0 Sep 26  2025 [1;34mlib[0m
+drwxrwxrwx    0 root     root             1 Jan  1  1970 [1;34mmisc[0m
+drwxrwxr-x    4 1000     1000             0 Sep 26  2025 [1;34mmnt[0m
+dr-xr-xr-x  116 root     root             0 Jan  1  1970 [1;34mproc[0m
+drwx------    2 root     root             0 Oct 16  2024 [1;34mroot[0m
+drwxr-xr-x    2 1000     1000             0 Sep 26  2025 [1;34msbin[0m
+dr-xr-xr-x   11 root     root             0 Jan  1  1970 [1;34msys[0m
+drwxrwxrwt    5 root     root           600 May  4 15:25 [1;34mtmp[0m
+drwxr-xr-x    4 1000     1000             0 Sep 26  2025 [1;34musr[0m
+drwxrwxrwt    3 root     root            60 Jan  1  1970 [1;34mvar[0m
+drwxrwxr-x    2 1000     1000             0 Sep 26  2025 [1;34mvendor[0m
+
+=== Command: find / -name "*goahead*" -o -name "*http*" -o -name "*web*" ===
+/customer/wifi/goahead
+/customer/wifi/run_goahead.sh
+/customer/wifi/webserver
+/tmp/brand_http
+/usr/sbin/httpd
+
+=== Command: find / -name "*.cgi" -o -name "*.asp" -o -name "*.js" -o -name "*.html" ===
+/customer/wifi/webserver/www/cgi-bin/Config.cgi
+find: /proc/579/task/626/fdinfo/35: No such file or directory
+
+=== Command: ls -la /P ===
+lrwxrwxrwx    1 root     root            13 May  4 15:11 [1;36m/P[0m -> [1;34m/mnt/mmc/DCIM[0m
+
+=== Command: ls -la /config ===
+total 13
+drwxr-xr-x    3 root     root             0 Jan  1  1970 [1;34m.[0m
+drwxr-xr-x   20 root     root             0 May  4 15:11 [1;34m..[0m
+-rwxr-xr-x    1 root     root          4044 May  4 15:11 [1;32mcgi_config.bin[0m
+-rwxr-xr-x    1 root     root          4045 May  1 01:25 [1;32mcgi_config_bak.bin[0m
+lrwxrwxrwx    1 1000     1000            21 Sep 26  2025 [1;36mfbdev.ini[0m -> [1;31m/bootconfig/fbdev.ini[0m
+-rw-r--r--    1 root     root             0 Jun 20  2026 [0;0mmenuinited[0m
+-rwxr-xr-x    1 1000     1000           152 Sep 26  2025 [1;32mmisc_profile.sh[0m
+-rwxr-xr-x    1 root     root          1208 May  4 15:11 [1;32mnet_config.bin[0m
+-rwxr-xr-x    1 root     root          1208 May  1 01:25 [1;32mnet_config_bak.bin[0m
+lrwxrwxrwx    1 1000     1000            19 Sep 26  2025 [1;36mvenc_fw[0m -> [1;34m/bootconfig/venc_fw[0m
+
+=== Command: ls -la /var ===
+total 0
+drwxrwxrwt    3 root     root            60 Jan  1  1970 [1;34m.[0m
+drwxr-xr-x   20 root     root             0 May  4 15:11 [1;34m..[0m
+drwxr-xr-x    2 root     root            40 Jan  1  1970 [1;34mlock[0m
+

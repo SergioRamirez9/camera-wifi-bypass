@@ -1,0 +1,23 @@
+# Ignore media downloads from the camera
+downloads/
+
+# Temporary and raw logo variants
+*_temp.jpg
+*_rotated.jpg
+*orig.jpg
+bootlogo.jpg
+poweroff.jpg
+poweroff_0.jpg
+poweroff_90.jpg
+poweroff_180.jpg
+poweroff_270.jpg
+
+# Local credentials config
+wifi_credentials.py
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
